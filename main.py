@@ -39,12 +39,13 @@ def callback():
 
 ######
 
+
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     message = judge(event.message.text)     #judge注意
     line_bot_api.reply_message(
         event.reply_token,
-        TextSendMessage(text=message),)
+        TextSendMessage(text=message))
 
 if __name__ == "__main__":
 #    app.run()
