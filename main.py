@@ -7,16 +7,10 @@ from linebot.exceptions import (
     InvalidSignatureError
 )
 from linebot.models import (
-<<<<<<< HEAD
-    MessageEvent, TextMessage, TextSendMessage, ImageSendMessage, VideoSendMessage, StickerSendMessage, AudioSendMessage
+    MessageEvent, TextMessage, TextSendMessage, ImageSendMessage, VideoSendMessage, StickerSendMessage, AudioSendMessage, ImageEvent
 )
 import os
 import random
-=======
-    MessageEvent, TextMessage, TextSendMessage,
-)
-import os
->>>>>>> ed730f24d6dd81c5c6cdca07d81521ae9879b7f9
 
 app = Flask(__name__)
 
@@ -44,28 +38,14 @@ def callback():
 
     return 'OK'
 
-<<<<<<< HEAD
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     message = event.message.text
-=======
-######
-
-
-@handler.add(MessageEvent, message=TextMessage)
-def handle_message(event):
-    message = judge(event.message.text)     #judge注意
->>>>>>> ed730f24d6dd81c5c6cdca07d81521ae9879b7f9
     line_bot_api.reply_message(
         event.reply_token,
         TextSendMessage(text=message))
 
-<<<<<<< HEAD
-
-=======
->>>>>>> ed730f24d6dd81c5c6cdca07d81521ae9879b7f9
 if __name__ == "__main__":
-#    app.run()
     port = int(os.getenv("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
