@@ -8,6 +8,8 @@ verify_ssl = true
 [packages]
 flask = "*"
 line-bot-sdk = "*"
+flask-sqlalchemy = "*"
+opencv-python = "*"
 
 [requires]
 python_version = "3.7"

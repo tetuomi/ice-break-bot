@@ -3,7 +3,7 @@ from linebot import (
     LineBotApi, WebhookHandler
 )
 import os
-#from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
@@ -14,7 +14,8 @@ LINE_CHANNEL_SECRET = os.environ["LINE_CHANNEL_SECRET"]
 line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
 handler = WebhookHandler(LINE_CHANNEL_SECRET)
 
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///local.db'
-#db = SQLAlchemy(app)
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///local.db'
+db = SQLAlchemy(app)
 
 import main.line
