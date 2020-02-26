@@ -6,12 +6,12 @@ from linebot.exceptions import (
 from linebot.models import (
     MessageEvent, TextMessage, TextSendMessage, ImageSendMessage, VideoSendMessage, StickerSendMessage, AudioSendMessage, ImageMessage,TemplateSendMessage
 )
-from linebot.models.template import ImageCarouselColumn
+from linebot.models.template import ImageCarouselColumn,ImageCarouselTemplate
 from linebot.models.actions import MessageAction
 import os
 import random
 
-from main.models import Imagemodel, Modelstatus
+from main.models import Imagemodel, Modelstatus, Startinggame
 from main.similar import *
 
 from pathlib import Path
@@ -39,31 +39,34 @@ def handle_message(event):
     save_starting_game(event.message.text)
 
     game = take_starting_game()
-    messages=["funny_face"]
     
-    if game == "funny_face":
+    if game == "変顔":
         message=TextSendMessage("画像を送ってね")
     else:
         message = TemplateSendMessage(
-            alt_text="tempalte",
-            template=ImageCarouselColumn(
-                image_url="https://https://ice-breake.herokuapp.com/static/yattinda.jpg",
-                action=create_message_actions(messages)
+            "tempalte",
+            ImageCarouselTemplate(
+                [
+                    ImageCarouselColumn(
+                        "https://https://ice-breake.herokuapp.com/static/yattinda.jpg",
+                        MessageAction("変顔", "変顔")
+                    )
+                ]
             )
         )
     
     if event.message.text == "やめる":
         save_exist_model(False)
         save_starting_game("None")
-        message = TextSendMessage("ばいばーい\n")
+        message = TextSendMessage("ばいばーい")
 
-    line_bot_api.reply_message(event.reply_message, message)
+    line_bot_api.reply_message(event.reply_token, message)
         
 @handler.add(MessageEvent, message=ImageMessage)
 def handle_image(event):
     game = take_starting_game()
     
-    if game == "funny_face":
+    if game == "変顔":
         profile = line_bot_api.get_profile(event.source.user_id)
         message_id = event.message.id
         

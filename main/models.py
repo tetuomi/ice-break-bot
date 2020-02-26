@@ -18,6 +18,9 @@ class Startinggame(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     game = db.Column(db.String(80))
 
+    def __init__(self,game):
+        self.game = game
+    
 def init():
     db.create_all()
         

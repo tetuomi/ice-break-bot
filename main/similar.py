@@ -45,19 +45,11 @@ def score_funny_face(model_img_path, compare_img_path):
     return score #点数調整必須
 
 def save_starting_game(game):
-    sg = db.session.query(Startinggame).filter_by(id=1).all()
+    sg = db.session.query(Startinggame).filter_by(id=1).first()
     sg.game = game
     db.session.add(sg)
     db.session.commit()
 
-def take_startting_game():
-    game = db.session.query(Startinggame).filter_by(id=1).all()
+def take_starting_game():
+    game = db.session.query(Startinggame).filter_by(id=1).first()
     return game.game
-
-def create_message_actions(messages):
-    actions = []
-
-    for message in messages:
-        actions.append(MessageAction(message,message))
-
-    return actions
