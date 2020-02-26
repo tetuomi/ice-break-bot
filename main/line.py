@@ -75,17 +75,17 @@ def handle_image(event):
                 
         if take_first_exist_model():
                     
-        model_id = take_first_message_id()
-        model_img_path = f"main/static/{model_id}.jpg"
+            model_id = take_first_message_id()
+            model_img_path = f"main/static/{model_id}.jpg"
                     
-        score = score_funny_face(model_img_path, message_img_path)
+            score = score_funny_face(model_img_path, message_img_path)
         
-        line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage(text='「' + profile.display_name + f'」さんは\n\n{score}点(100)')
-        )
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text='「' + profile.display_name + f'」さんは\n\n{score}点(100)')
+            )
         
-        Path(message_img_path).absolute().unlink()
+            Path(message_img_path).absolute().unlink()
         
         else:
             save_exist_model(True)
