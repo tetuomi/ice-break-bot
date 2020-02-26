@@ -52,13 +52,13 @@ def handle_message(event):
                     CarouselColumn(
                         thumbnail_image_url="https://ice-breake.herokuapp.com/static/yattinda.jpg",
                         title="変顔採点",
-                        text="はじめに画像を送ってください\nその人がモデルとなります\nモデルに似た変顔を決め込んで、画像を送りましょう\n100点満点で採点されます\n「やめる」を入力すると、ゲームを終了します",
+                        text="画像を送ってください\nその人がモデルとなります\nモデルに似た変顔を決めて、画像を送りましょう\n100点満点です",
                         actions=[MessageAction("遊ぶ", "変顔")]
                     ),
                     CarouselColumn(
                         thumbnail_image_url="https://rr.img.naver.jp/mig?src=http%3A%2F%2Fimgcc.naver.jp%2Fkaze%2Fmission%2FUSER%2F20140722%2F51%2F5551361%2F4%2F480x602xbb1ca7f0feef63f896500253.jpg%2F300%2F600&twidth=300&theight=600&qlt=80&res_format=jpg&op=r",
                         title="これだーれだ？",
-                        text="botに個人チャットで自己紹介文を送ってください\nおがしゅんあとで追加よろしく\n「やめる」を入力すると、ゲームを終了します",
+                        text="botに個人チャットで自己紹介文を送ってください\nおがしゅんあとで追加よろしく60文字以内",
                         actions=[MessageAction("遊ぶ", "これ誰")]
                     )
                 ]
