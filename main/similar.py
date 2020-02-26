@@ -1,26 +1,52 @@
 import cv2
 import os
-from main.models import Imagemodel, Modelstatus, Startinggame
+from main.models import *
 from main import db
 from linebot.models.actions import MessageAction
 
-def save_message_id(message_id):
-    im = Imagemodel(message_id)
-    db.session.add(im)
+def save_user(is_nomal_face,user_id,group_id,message_id):
+    user = User(is_nomal_face,user_id,group_id,message_id,0)
+    db.session.add(user)
     db.session.commit()
 
-def take_first_message_id():
-    im = db.session.query(Imagemodel).all()
-    return im[-1].message_id
-
-def save_exist_model(exist_model):
-    ms = Modelstatus(exist_model)
-    db.session.add(ms)
+def save_inm_and_score(user_id,group_id,is_nomal_face,score):
+    user = db.session.query(User).filter_by(group_id=group_id).filter_by(user_id=user_id).first()
+    user.is_nomal_face = is_nomal_face
+    user.score = score
+    db.session.add(user)
     db.session.commit()
 
-def take_first_exist_model():
-    ms = db.session.query(Modelstatus).all()
-    return ms[-1].exist_model
+
+def save_inm_and_mid(user_id,message_id,group_id,is_nomal_face):
+    user = db.session.query(User).filter_by(group_id=group_id).filter_by(user_id=user_id).first()
+    user.is_nomal_face = is_nomal_face
+    user.message_id = message_id
+    db.session.add(user)
+    db.session.commit()
+    
+
+def take_message_id(group_id,user_id):
+    user = db.session.query(User).filter_by(group_id=group_id).filter_by(user_id=user_id).first()
+    return user.message_id
+
+def take_is_nomal_face(group_id,user_id):
+    user = db.session.query(User).filter_by(group_id=group_id).filter_by(user_id=user_id).first()
+    return user.is_nomal_face
+
+def is_user_id(user_id):
+    user = db.session.query(User).filter_by(user_id=user_id).all()
+    if user == None:
+        return False
+    else:
+        return True
+
+
+def is_group_id(group_id):
+    user = db.session.query(User).filter_by(group_id=group_id).all()
+    if user == None:
+        return False
+    else:
+        return True
 
 def score_funny_face(model_img_path, compare_img_path):
     IMG_SIZE = (200, 200)
@@ -42,7 +68,7 @@ def score_funny_face(model_img_path, compare_img_path):
 
     score = sum(dist) / len(dist)
 
-    return score #点数調整必須
+    return int(score) #点数調整必須
 
 def save_starting_game(game):
     sg = db.session.query(Startinggame).filter_by(id=1).first()

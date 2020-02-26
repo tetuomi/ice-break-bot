@@ -1,18 +1,18 @@
 from main import db
 
-class Imagemodel(db.Model):
+class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    message_id = db.Column(db.String(80), unique=True)
-
-    def __init__(self, message_id):
+    is_nomal_face = db.Column(db.Boolean)
+    user_id = db.Column(db.String(80))
+    group_id = db.Column(db.String(80))
+    message_id = db.Column(db.String(80))
+    score = db.Column(db.Integer)
+    def __init__(self,is_nomal_face,user_id,group_id,message_id,score):
+        self.is_nomal_face = is_nomal_face
+        self.user_id = user_id
+        self.group_id = group_id
         self.message_id = message_id
-
-class Modelstatus(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    exist_model = db.Column(db.Boolean)
-
-    def __init__(self, exist_model):
-        self.exist_model = exist_model
+        self.score = score
 
 class Startinggame(db.Model):
     id = db.Column(db.Integer, primary_key=True)

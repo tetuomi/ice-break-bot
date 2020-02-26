@@ -41,18 +41,18 @@ def handle_message(event):
     game = take_starting_game()
     
     if game == "変顔":
-        message=TextSendMessage("画像を送ってね")
+        reply_message=TextSendMessage("画像を送ってね")
     elif game == "これ誰":
-        message=TextSendMessage("自己紹介を個チャでしてね") # おがしゅんよろ
+        reply_message=TextSendMessage("自己紹介を個チャでしてね") # おがしゅんよろ
     else:
-        message = TemplateSendMessage(
+        reply_message = TemplateSendMessage(
             "tempalte",
             CarouselTemplate(
                 [
                     CarouselColumn(
                         thumbnail_image_url="https://ice-breake.herokuapp.com/static/yattinda.jpg",
                         title="変顔採点",
-                        text="画像を送ってください\nその人がモデルとなります\nモデルに似た変顔を決めて、画像を送りましょう\n100点満点です",
+                        text="普通の顔と変顔がどれくらい\nかけ離れているかを測定します",
                         actions=[MessageAction("遊ぶ", "変顔")]
                     ),
                     CarouselColumn(
@@ -66,47 +66,47 @@ def handle_message(event):
         )
     
     if event.message.text == "やめる":
-        save_exist_model(False)
         save_starting_game("None")
-        message = TextSendMessage("ばいばーい")
+        reply_message = TextSendMessage("ばいばーい")
 
-    line_bot_api.reply_message(event.reply_token, message)
+    line_bot_api.reply_message(event.reply_token, reply_message)
         
 @handler.add(MessageEvent, message=ImageMessage)
 def handle_image(event):
     game = take_starting_game()
     
     if game == "変顔":
-        profile = line_bot_api.get_profile(event.source.user_id)
+        user_id = event.source.user_id
+        profile = line_bot_api.get_profile(user_id)
+        group_id = event.source.group_id
         message_id = event.message.id
-        
+
         message_content = line_bot_api.get_message_content(message_id)
-        message_img_path = f"main/static/{message_id}.jpg"
-        with open(Path(message_img_path).absolute(), "wb") as f:
+        with open(Path(f"main/static/{message_id}.jpg").absolute(), "wb") as f:
             for chunk in message_content.iter_content():
                 f.write(chunk)
-                
-        if take_first_exist_model():
+        
+        if is_user_id(user_id):
+            if is_group_id(group_id):
+                if take_is_nomal_face(group_id,user_id):
+                    funny_face_path = "main/static/{}.jpg".format(message_id)
+                    nomal_face_path = "main/static/{}.jpg".format(take_message_id(group_id,user_id))
+                    score=score_funny_face(nomal_face_path,funny_face_path)
+                    reply_message = TextSendMessage(f'「{profile.display_name}」さんは\n\n{score}点')
+                    save_inm_and_score(user_id,group_id,False,score)
                     
-            model_id = take_first_message_id()
-            model_img_path = f"main/static/{model_id}.jpg"
-                    
-            score = score_funny_face(model_img_path, message_img_path)
-        
-            line_bot_api.reply_message(
-                event.reply_token,
-                TextSendMessage(text='「' + profile.display_name + f'」さんは\n\n{score}点(100)')
-            )
-        
-            Path(message_img_path).absolute().unlink()
-        
-        else:
-            save_exist_model(True)
-            save_message_id(message_id)
-            
-            line_bot_api.reply_message(
-                event.reply_token,
-                TextSendMessage(text='「' + profile.display_name + '」さんの画像を\nモデルにしました')
-            )
+                    Path(funny_face_path).unlink()
+                    Path(nomal_face_path).unlink()
 
-            
+                else:
+                    save_inm_and_mid(user_id,message_id,group_id,True)
+                    reply_message = TextSendMessage(f'「{profile.display_name}」さんはの普通の顔を確認しました')
+            else:
+                save_user(True,user_id,group_id,message_id)
+                reply_message = TextSendMessage(f'「{profile.display_name}」さんはの普通の顔を確認しました')
+        else:
+            save_user(True,user_id,group_id,message_id)
+            reply_message = TextSendMessage('「' + profile.display_name + f'」さんはの普通の顔を確認しました')
+        line_bot_api.reply_message(event.reply_token,reply_message)
+
+    
