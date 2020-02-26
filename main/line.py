@@ -6,12 +6,12 @@ from linebot.exceptions import (
 from linebot.models import (
     MessageEvent, TextMessage, TextSendMessage, ImageSendMessage, VideoSendMessage, StickerSendMessage, AudioSendMessage, ImageMessage,TemplateSendMessage
 )
-from linebot.models.template import ImageCarouselColumn,ImageCarouselTemplate
+from linebot.models.template import CarouselColumn,CarouselTemplate
 from linebot.models.actions import MessageAction
 import os
 import random
 
-from main.models import Imagemodel, Modelstatus, Startinggame
+from main.models import *
 from main.similar import *
 
 from pathlib import Path
@@ -42,14 +42,24 @@ def handle_message(event):
     
     if game == "変顔":
         message=TextSendMessage("画像を送ってね")
+    elif game == "これ誰":
+        message=TextSendMessage("自己紹介を個チャでしてね") # おがしゅんよろ
     else:
         message = TemplateSendMessage(
             "tempalte",
-            ImageCarouselTemplate(
+            CarouselTemplate(
                 [
-                    ImageCarouselColumn(
-                        "https://ice-breake.herokuapp.com/static/yattinda.jpg",
-                        MessageAction("変顔", "変顔")
+                    CarouselColumn(
+                        thumbnail_image_url="https://ice-breake.herokuapp.com/static/yattinda.jpg",
+                        title="変顔採点",
+                        text="はじめに画像を送ってください\nその人がモデルとなります\nモデルに似た変顔を決め込んで、画像を送りましょう\n100点満点で採点されます\n「やめる」を入力すると、ゲームを終了します",
+                        MessageAction("遊ぶ", "変顔")
+                    ),
+                    CarouselColumn(
+                        thumbnail_image_url="https://rr.img.naver.jp/mig?src=http%3A%2F%2Fimgcc.naver.jp%2Fkaze%2Fmission%2FUSER%2F20140722%2F51%2F5551361%2F4%2F480x602xbb1ca7f0feef63f896500253.jpg%2F300%2F600&twidth=300&theight=600&qlt=80&res_format=jpg&op=r",
+                        title="これだーれだ？",
+                        text="botに個人チャットで自己紹介文を送ってください\nおがしゅんあとで追加よろしく\n「やめる」を入力すると、ゲームを終了します",
+                        MessageAction("遊ぶ", "これ誰")
                     )
                 ]
             )
