@@ -14,7 +14,10 @@ class Modelstatus(db.Model):
     def __init__(self, exist_model):
         self.exist_model = exist_model
 
-    
+class Startinggame(db.Model):
+    id = db.Column(db.Integer, primary_key)
+    game = db.Column(db.String(80))
+
 def init():
     db.create_all()
         
