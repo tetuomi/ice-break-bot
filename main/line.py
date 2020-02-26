@@ -48,7 +48,7 @@ def handle_message(event):
             ImageCarouselTemplate(
                 [
                     ImageCarouselColumn(
-                        "https://https://ice-breake.herokuapp.com/static/yattinda.jpg",
+                        "https://ice-breake.herokuapp.com/static/yattinda.jpg",
                         MessageAction("変顔", "変顔")
                     )
                 ]
