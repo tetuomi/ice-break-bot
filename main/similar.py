@@ -1,6 +1,6 @@
 import cv2
 import os
-from main.models import Imagemodel, Modelstatus
+from main.models import Imagemodel, Modelstatus, Startinggame
 from main import db
 from linebot.models.actions import MessageAction
 
