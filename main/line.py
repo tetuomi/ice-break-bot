@@ -1,5 +1,4 @@
-
-1;5202;0cfrom flask import request, abort
+from flask import request, abort
 from main import app, line_bot_api, handler, db
 from linebot.exceptions import (
     InvalidSignatureError
