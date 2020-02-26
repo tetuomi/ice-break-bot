@@ -41,7 +41,7 @@ def handle_message(event):
     game = take_starting_game()
 
     group_id = event.source.group_id
-    
+    first_user = get_ranking(group_id)
     if game == "変顔":
         reply_message=TextSendMessage("画像を送ってね")
     elif game == "これ誰":
@@ -54,7 +54,7 @@ def handle_message(event):
                     CarouselColumn(
                         thumbnail_image_url="https://ice-breake.herokuapp.com/static/yattinda.jpg",
                         title="変顔採点",
-                        text=f"変顔を採点します\n普通の顔と変顔を送ってください\n\n１位 :{get_ranking({group_id})}",
+                        text=f"変顔を採点します\n普通の顔と変顔を送ってください\n\n１位 :{first_user}",
                         actions=[MessageAction("遊ぶ", "変顔")]
                     ),
                     CarouselColumn(
