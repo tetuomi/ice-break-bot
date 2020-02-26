@@ -1,4 +1,5 @@
-from flask import request, abort
+
+1;5202;0cfrom flask import request, abort
 from main import app, line_bot_api, handler, db
 from linebot.exceptions import (
     InvalidSignatureError
@@ -35,10 +36,12 @@ def callback():
 
 
 @handler.add(MessageEvent, message=TextMessage)
-def handle_message(event):    
+def handle_message(event):
     save_starting_game(event.message.text)
 
     game = take_starting_game()
+
+    group_id = event.source.group_id
     
     if game == "変顔":
         reply_message=TextSendMessage("画像を送ってね")
@@ -52,7 +55,7 @@ def handle_message(event):
                     CarouselColumn(
                         thumbnail_image_url="https://ice-breake.herokuapp.com/static/yattinda.jpg",
                         title="変顔採点",
-                        text="普通の顔と変顔がどれくらい\nかけ離れているかを測定します",
+                        text=f"変顔を採点します\n普通の顔と変顔を送ってください\n\n１位 :{get_ranking({group_id})}",
                         actions=[MessageAction("遊ぶ", "変顔")]
                     ),
                     CarouselColumn(
@@ -92,7 +95,7 @@ def handle_image(event):
                     funny_face_path = "main/static/{}.jpg".format(message_id)
                     nomal_face_path = "main/static/{}.jpg".format(take_message_id(group_id,user_id))
                     score=score_funny_face(nomal_face_path,funny_face_path)
-                    reply_message = TextSendMessage(f'「{profile.display_name}」さんは\n\n{score}点')
+                    reply_message = TextSendMessage(f'「{profile.display_name}」さんは\n\n{score}点\n\nまた普通の顔を送ってね')
                     save_inm_and_score(user_id,group_id,False,score)
                     
                     Path(funny_face_path).unlink()
@@ -100,13 +103,13 @@ def handle_image(event):
 
                 else:
                     save_inm_and_mid(user_id,message_id,group_id,True)
-                    reply_message = TextSendMessage(f'「{profile.display_name}」さんはの普通の顔を確認しました')
+                    reply_message = TextSendMessage(f'「{profile.display_name}」さんの普通の顔を確認しました')
             else:
                 save_user(True,user_id,group_id,message_id)
-                reply_message = TextSendMessage(f'「{profile.display_name}」さんはの普通の顔を確認しました')
+                reply_message = TextSendMessage(f'「{profile.display_name}」さんの普通の顔を確認しました')
         else:
             save_user(True,user_id,group_id,message_id)
-            reply_message = TextSendMessage('「' + profile.display_name + f'」さんはの普通の顔を確認しました')
+            reply_message = TextSendMessage(f'「{profile.display_name}」さんの普通の顔を確認しました')
         line_bot_api.reply_message(event.reply_token,reply_message)
 
     

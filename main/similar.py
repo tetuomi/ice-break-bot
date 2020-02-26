@@ -1,8 +1,7 @@
 import cv2
 import os
 from main.models import *
-from main import db
-from linebot.models.actions import MessageAction
+from main import db,line_bot_api
 
 def save_user(is_nomal_face,user_id,group_id,message_id):
     user = User(is_nomal_face,user_id,group_id,message_id,0)
@@ -79,3 +78,9 @@ def save_starting_game(game):
 def take_starting_game():
     game = db.session.query(Startinggame).filter_by(id=1).first()
     return game.game
+
+def get_ranking(group_id):
+    user = db.session.query(User).filter_by(group_id=group_id).order_by((User.score.desc())).first()
+    if user == None:
+        return "挑戦者がいません"
+    return line_bot_api.get_profile(user.user_id).display_name + "(" + str(user.score)+")"
