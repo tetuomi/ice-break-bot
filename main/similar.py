@@ -51,7 +51,7 @@ def save_starting_game(game):
     db.session.commit()
 
 def take_startting_game():
-    game = db.session.query(Startinggame)filter_by(id=1).all()
+    game = db.session.query(Startinggame).filter_by(id=1).all()
     return game.game
 
 def create_message_actions(messages):
