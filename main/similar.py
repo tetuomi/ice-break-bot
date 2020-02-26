@@ -35,7 +35,7 @@ def take_is_nomal_face(group_id,user_id):
 
 def is_user_id(user_id):
     user = db.session.query(User).filter_by(user_id=user_id).all()
-    if user == None:
+    if user == []:
         return False
     else:
         return True
@@ -43,7 +43,7 @@ def is_user_id(user_id):
 
 def is_group_id(group_id):
     user = db.session.query(User).filter_by(group_id=group_id).all()
-    if user == None:
+    if user == []:
         return False
     else:
         return True
