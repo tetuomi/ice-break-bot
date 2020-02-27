@@ -65,10 +65,14 @@ def score_funny_face(model_img_path, compare_img_path):
     matches = bf.match(model_des, compare_des)
     dist = [m.distance for m in matches]
 
-    score = sum(dist) / len(dist)
+    score = int(sum(dist) / len(dist))
 
-    return int(score) #点数調整必須
+    if score > 90:
+        return score
+    else:
+        return int(0.1 * score + 81)
 
+    
 def save_starting_game(game):
     sg = db.session.query(Startinggame).filter_by(id=1).first()
     sg.game = game
