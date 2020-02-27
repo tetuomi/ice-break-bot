@@ -21,6 +21,29 @@ class Startinggame(db.Model):
     def __init__(self,game):
         self.game = game
     
+
+class Instruments(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    groupid = db.Column(db.String(80))
+    userid = db.Column(db.String(80))
+    message = db.Column(db.String(100))
+    status = db.Column(db.String(15))
+    icon = db.Column(db.String(200))
+
+    def __init__(self, groupid, userid, message, status, icon):
+        self.groupid = groupid
+        self.userid = userid
+        self.message = message
+        self.status = status
+        self.icon = icon
+
+class Answer(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    answer = db.Column(db.String(80))
+
+    def __init__(self, answer):
+        self.answer = answer
+
 def init():
     db.create_all()
         
