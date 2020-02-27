@@ -36,19 +36,20 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    save_starting_game(event.message.text)
-
+    message=event.message.text
+    keywards = ["ゲーム","あいすぶいく", "アイスブレイク","げーむ"]
+    save_starting_game(message)
     game = take_starting_game()
-
     group_id = event.source.group_id
     first_user = get_ranking(group_id)
+    
     if game == "変顔":
         reply_message=TextSendMessage("画像を送ってね")
     elif game == "これ誰":
         reply_message=TextSendMessage("自己紹介を個チャでしてね") # おがしゅんよろ
     elif game == "正解探し":
         reply_message=TextSendMessage("菅田将暉") #トリスト
-    else:
+    elif game in keywards:
         reply_message = TemplateSendMessage(
             "tempalte",
             CarouselTemplate(
@@ -74,11 +75,10 @@ def handle_message(event):
                 ]
             )
         )
-    
-    if event.message.text == "やめる":
+    elif game == "やめる":
         save_starting_game("None")
         reply_message = TextSendMessage("ばいばーい")
-
+        
     line_bot_api.reply_message(event.reply_token, reply_message)
         
 @handler.add(MessageEvent, message=ImageMessage)
