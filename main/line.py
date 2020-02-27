@@ -46,6 +46,8 @@ def handle_message(event):
         reply_message=TextSendMessage("画像を送ってね")
     elif game == "これ誰":
         reply_message=TextSendMessage("自己紹介を個チャでしてね") # おがしゅんよろ
+    elif game == "正解探し":
+        reply_message=TextSendMessage("菅田将暉") #トリスト
     else:
         reply_message = TemplateSendMessage(
             "tempalte",
@@ -54,7 +56,7 @@ def handle_message(event):
                     CarouselColumn(
                         thumbnail_image_url="https://ice-breake.herokuapp.com/static/yattinda.jpg",
                         title="変顔採点",
-                        text=f"変顔を採点します\n普通の顔と変顔を送ってください\n\n１位 :{first_user}",
+                        text=f"変顔を採点します\n普通の顔と変顔を送ってください\n１位 :{first_user}",
                         actions=[MessageAction("遊ぶ", "変顔")]
                     ),
                     CarouselColumn(
@@ -62,7 +64,13 @@ def handle_message(event):
                         title="これだーれだ？",
                         text="botに個人チャットで自己紹介文を送ってください\nおがしゅんあとで追加よろしく60文字以内",
                         actions=[MessageAction("遊ぶ", "これ誰")]
-                    )
+                    ),
+                    CarouselColumn(
+                        thumbnail_image_url="https://prtimes.jp/i/47616/5/resize/d47616-5-677884-3.jpg",
+                        title="みんなで正解探し",
+                        text="トリスト紹介文頼む",
+                        actions=[MessageAction("遊ぶ", "正解探し")]
+                    ),
                 ]
             )
         )
