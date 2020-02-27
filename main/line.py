@@ -12,7 +12,7 @@ import os
 import random
 
 from main.models import *
-from main.similar import *
+from main.funny_face import *
 
 from pathlib import Path
 
